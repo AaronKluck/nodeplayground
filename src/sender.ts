@@ -16,6 +16,4 @@ export class Sender implements ISender {
     }
 }
 
-export interface ISenderFactory {
-    (res : express.Response) : ISender;
-}
+export type ISenderFactory = (res : express.Response)  => ISender;

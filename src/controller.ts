@@ -1,19 +1,22 @@
 import express from "express";
-import { ISenderFactory } from "./sender";
-import { IHandler } from "./handler";
+import { ISender, ISenderFactory } from "./sender";
 
 // We want to break dependency on Express and deal with simple string:string
 // dictionaries as inputs.
 function parseParams(req : express.Request): { [key: string]: string } {
-    let params: { [key: string]: string } = {}
-    for (let key in req.query) {
-        let value = req.query[key];
+    const params: { [key: string]: string } = {}
+    for (const key in req.query) {
+        const value = req.query[key];
 
         if (typeof value === "string") {
             params[key] = value
         }
     }
     return params
+}
+
+export interface IHandler {
+    Execute(params : { [key: string]: string }, output : ISender) : Promise<void>
 }
 
 export class Controller {
@@ -34,15 +37,15 @@ export class Controller {
         this.barHandler = barHandler
     }
 
-    root(req : express.Request, res : express.Response) {
-        this.rootHandler.Execute(parseParams(req), this.senderFactory(res))
+    async root(req : express.Request, res : express.Response) {
+        await this.rootHandler.Execute(parseParams(req), this.senderFactory(res))
     }
 
-    foo(req : express.Request, res : express.Response) {
-        this.fooHandler.Execute(parseParams(req), this.senderFactory(res))
+    async foo(req : express.Request, res : express.Response) {
+        await this.fooHandler.Execute(parseParams(req), this.senderFactory(res))
     }
 
-    bar(req : express.Request, res : express.Response) {
-        this.barHandler.Execute(parseParams(req), this.senderFactory(res))
+    async bar(req : express.Request, res : express.Response) {
+        await this.barHandler.Execute(parseParams(req), this.senderFactory(res))
     }
 }
