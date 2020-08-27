@@ -1,16 +1,20 @@
-import { ISender } from "../sender";
-import { IStorageReader } from "../storage";
+import { injectable, inject } from "inversify";
+import { ISender, IStorageReader, IRootHandler } from "../interfaces";
+import { TYPES } from "../types"
 
-export class ReadHandler {
+@injectable()
+export class ReadHandler implements IRootHandler {
     storageReader : IStorageReader
 
-    constructor(storageReader : IStorageReader) {
+    constructor(
+        @inject(TYPES.IStorageReader) storageReader : IStorageReader
+    ) {
         this.storageReader = storageReader
     }
 
     async Execute(params : { [key: string]: string }, output : ISender) {
         if (params.q === undefined) {
-            output.send(
+            output.Send(
                 "usage: GET param 'q' w/ comma-separated keys to query<br/>"
                 + "example: read?q=foo,bar"
             )
@@ -23,6 +27,6 @@ export class ReadHandler {
             const value = await this.storageReader.Read(keys[idx])
             html += keys[idx] + " : " + value + "<br/>"
         }
-        output.send(html)
+        output.Send(html)
     }
 }

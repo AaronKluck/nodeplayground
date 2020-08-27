@@ -1,38 +1,23 @@
+import { myContainer } from "./inversify.config";
 import express from "express";
-import { Sender } from "./sender";
-import { Controller } from "./controller";
-import { RootHandler } from "./handler/root"
-import { ReadHandler } from "./handler/read"
-import { WriteHandler } from "./handler/write"
-import { Storage } from "./storage";
-
-
-function senderFactory(res : express.Response) {
-    return new Sender(res);
-};
+import { TYPES } from "./types";
+import { Controller } from "./controller"
 
 const app = express();
-const port = 8080; // default port to listen
+const port = 8080;
 
-const storage = new Storage("./data/storage.json")
-
-const controller = new Controller(
-    senderFactory,
-    new RootHandler(storage),
-    new ReadHandler(storage),
-    new WriteHandler(storage)
-)
+const controller = myContainer.get<Controller>(TYPES.Controller)
 
 app.get( "/", async (req, res) => {
-    await controller.root(req, res)
+    await controller.Root(req, res)
 });
 
 app.get( "/read", async (req, res) => {
-    await controller.foo(req, res)
+    await controller.Read(req, res)
 });
 
 app.get( "/write", async (req, res) => {
-    await controller.bar(req, res)
+    await controller.Write(req, res)
 });
 
 app.listen(port);

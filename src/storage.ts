@@ -1,22 +1,18 @@
+import { injectable, inject } from "inversify";
 import { promisify } from "util";
+import { TYPES } from "./types"
 import * as fs from "fs"
-
-export interface IStorageReader {
-    Read(key : string) : Promise<string>
-    ReadAll() : Promise<{[key : string]: string}>
-}
-
-export interface IStorageWriter {
-    Write(key : string, value : string) : Promise<void>
-}
 
 const readFile = promisify(fs.readFile)
 const writeFile = promisify(fs.writeFile)
 
+@injectable()
 export class Storage {
     path : fs.PathLike
 
-    constructor(path : fs.PathLike) {
+    constructor(
+        @inject(TYPES.storagePath) path : fs.PathLike
+    ) {
         this.path = path
     }
 

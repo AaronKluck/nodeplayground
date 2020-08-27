@@ -1,8 +1,6 @@
 import express from "express";
-
-export interface ISender{
-    send(output: string) : void;
- }
+import { injectable, } from "inversify";
+import { ISender, ISenderFactory } from "./interfaces"
 
 export class Sender implements ISender {
     res : express.Response;
@@ -11,9 +9,14 @@ export class Sender implements ISender {
         this.res = res;
     }
 
-    send(output: string) : void {
+    Send(output: string) : void {
         this.res.send(output)
     }
 }
 
-export type ISenderFactory = (res : express.Response)  => ISender;
+@injectable()
+export class SenderFactory implements ISenderFactory {
+    Create(res : express.Response) : ISender {
+        return new Sender(res)
+    }
+}

@@ -1,5 +1,7 @@
 import express from "express";
-import { ISender, ISenderFactory } from "./sender";
+import { injectable, inject } from "inversify";
+import { IRootHandler, IReadHandler, IWriteHandler, ISenderFactory } from "./interfaces";
+import { TYPES } from "./types"
 
 // We want to break dependency on Express and deal with simple string:string
 // dictionaries as inputs.
@@ -15,37 +17,34 @@ function parseParams(req : express.Request): { [key: string]: string } {
     return params
 }
 
-export interface IHandler {
-    Execute(params : { [key: string]: string }, output : ISender) : Promise<void>
-}
-
+@injectable()
 export class Controller {
     senderFactory : ISenderFactory
-    rootHandler : IHandler
-    fooHandler : IHandler
-    barHandler : IHandler
+    rootHandler : IRootHandler
+    readHandler : IReadHandler
+    writeHandler : IWriteHandler
 
     constructor(
-        senderFactory : ISenderFactory,
-        rootHandler : IHandler,
-        fooHandler : IHandler,
-        barHandler : IHandler,
+        @inject(TYPES.ISenderFactory) senderFactory : ISenderFactory,
+        @inject(TYPES.IRootHandler) rootHandler : IRootHandler,
+        @inject(TYPES.IReadHandler) readHandler : IReadHandler,
+        @inject(TYPES.IWriteHandler) writeHandler : IWriteHandler,
     ) {
         this.senderFactory = senderFactory
         this.rootHandler = rootHandler
-        this.fooHandler = fooHandler
-        this.barHandler = barHandler
+        this.readHandler = readHandler
+        this.writeHandler = writeHandler
     }
 
-    async root(req : express.Request, res : express.Response) {
-        await this.rootHandler.Execute(parseParams(req), this.senderFactory(res))
+    async Root(req : express.Request, res : express.Response) {
+        await this.rootHandler.Execute(parseParams(req), this.senderFactory.Create(res))
     }
 
-    async foo(req : express.Request, res : express.Response) {
-        await this.fooHandler.Execute(parseParams(req), this.senderFactory(res))
+    async Read(req : express.Request, res : express.Response) {
+        await this.readHandler.Execute(parseParams(req), this.senderFactory.Create(res))
     }
 
-    async bar(req : express.Request, res : express.Response) {
-        await this.barHandler.Execute(parseParams(req), this.senderFactory(res))
+    async Write(req : express.Request, res : express.Response) {
+        await this.writeHandler.Execute(parseParams(req), this.senderFactory.Create(res))
     }
 }
