@@ -1,12 +1,12 @@
-import { myContainer } from "./inversify.config";
-import express from "express";
-import { TYPES } from "./types";
-import { Controller } from "./controller"
+import { myContainer } from "./inversify.config"
+import express from "express"
+import { TYPES } from "./types"
+import { KeyValueController } from "./controller/keyvalue_controller"
 
 const app = express();
 const port = 8080;
 
-const controller = myContainer.get<Controller>(TYPES.Controller)
+const controller = myContainer.get<KeyValueController>(TYPES.Controller)
 
 app.get( "/", async (req, res) => {
     await controller.Root(req, res)

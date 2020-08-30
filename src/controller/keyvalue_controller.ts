@@ -1,7 +1,7 @@
-import express from "express";
-import { injectable, inject } from "inversify";
-import { IRootHandler, IReadHandler, IWriteHandler, IResponseFactory } from "./interfaces";
-import { TYPES } from "./types"
+import express from "express"
+import { injectable, inject } from "inversify"
+import { IRootHandler, IReadHandler, IWriteHandler, IResponseFactory } from "../interfaces"
+import { TYPES } from "../types"
 
 // We want to break dependency on Express and deal with simple string:string
 // dictionaries as inputs.
@@ -18,7 +18,7 @@ function parseParams(req : express.Request): { [key: string]: string } {
 }
 
 @injectable()
-export class Controller {
+export class KeyValueController {
     responseFactory : IResponseFactory
     rootHandler : IRootHandler
     readHandler : IReadHandler

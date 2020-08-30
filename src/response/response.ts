@@ -1,12 +1,12 @@
-import express from "express";
-import { injectable, } from "inversify";
-import { IResponse, IResponseFactory } from "./interfaces"
+import express from "express"
+import { injectable, } from "inversify"
+import { IResponse, IResponseFactory } from "../interfaces"
 
 export class Response implements IResponse {
-    res : express.Response;
+    res : express.Response
 
     constructor(res : express.Response) {
-        this.res = res;
+        this.res = res
     }
 
     Send(output: string) : void {

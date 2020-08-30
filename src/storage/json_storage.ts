@@ -1,9 +1,9 @@
-import { injectable, inject } from "inversify";
+import { injectable, inject } from "inversify"
 import { TYPES } from "../types"
-import { IFileIo } from "../interfaces";
+import { IFileIo } from "../interfaces"
 
 @injectable()
-export class Storage {
+export class JsonStorage {
     fileIo : IFileIo
 
     constructor(

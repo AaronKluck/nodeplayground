@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { FileIo } from "./file_io";
+import "reflect-metadata"
+import { FileIo } from "./file_io"
 import * as fs from "fs"
 
 const testFile = "./data/testfile"
@@ -9,7 +9,7 @@ test('Read', async () => {
     fs.writeFileSync(testFile, "read this data")
 
     let fileIo = new FileIo(testFile)
-    let data = await fileIo.Read();
+    let data = await fileIo.Read()
 
     expect(data.toString()).toBe("read this data")
 })

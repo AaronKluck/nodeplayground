@@ -10,4 +10,4 @@ export let TYPES = {
     Storage: Symbol("Storage"),
     Controller: Symbol("Controller"),
     storagePath: Symbol("storagePath")
-};
+}

@@ -1,4 +1,4 @@
-import express from "express";
+import express from "express"
 
 export interface IFileIo {
     Read() : Promise<Buffer>
@@ -15,7 +15,7 @@ export interface IJsonStorageWriter {
 }
 
 export interface IResponse{
-    Send(output: string) : void;
+    Send(output: string) : void
  }
 
 export interface IResponseFactory {

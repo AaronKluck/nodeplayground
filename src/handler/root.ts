@@ -1,5 +1,5 @@
-import { injectable, inject } from "inversify";
-import { IJsonStorageReader, IRootHandler, IResponse } from "../interfaces";
+import { injectable, inject } from "inversify"
+import { IJsonStorageReader, IRootHandler, IResponse } from "../interfaces"
 import { TYPES } from "../types"
 
 @injectable()

@@ -1,5 +1,5 @@
-import { injectable, inject } from "inversify";
-import { promisify } from "util";
+import { injectable, inject } from "inversify"
+import { promisify } from "util"
 import { TYPES } from "../types"
 import * as fs from "fs"
 
