@@ -1,18 +1,18 @@
 import { injectable, inject } from "inversify";
-import { ISender, IStorageReader, IRootHandler } from "../interfaces";
+import { IResponse, IJsonStorageReader, IRootHandler } from "../interfaces";
 import { TYPES } from "../types"
 
 @injectable()
 export class ReadHandler implements IRootHandler {
-    storageReader : IStorageReader
+    storageReader : IJsonStorageReader
 
     constructor(
-        @inject(TYPES.IStorageReader) storageReader : IStorageReader
+        @inject(TYPES.IJsonStorageReader) storageReader : IJsonStorageReader
     ) {
         this.storageReader = storageReader
     }
 
-    async Execute(params : { [key: string]: string }, output : ISender) {
+    async Execute(params : { [key: string]: string }, output : IResponse) {
         if (params.q === undefined) {
             output.Send(
                 "usage: GET param 'q' w/ comma-separated keys to query<br/>"

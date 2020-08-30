@@ -1,0 +1,8 @@
+module.exports = {
+  roots: ['<rootDir>/src'],
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  coverageReporters: ['json', 'lcov', 'text', 'clover']
+}

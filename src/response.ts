@@ -1,8 +1,8 @@
 import express from "express";
 import { injectable, } from "inversify";
-import { ISender, ISenderFactory } from "./interfaces"
+import { IResponse, IResponseFactory } from "./interfaces"
 
-export class Sender implements ISender {
+export class Response implements IResponse {
     res : express.Response;
 
     constructor(res : express.Response) {
@@ -15,8 +15,8 @@ export class Sender implements ISender {
 }
 
 @injectable()
-export class SenderFactory implements ISenderFactory {
-    Create(res : express.Response) : ISender {
-        return new Sender(res)
+export class ResponseFactory implements IResponseFactory {
+    Create(res : express.Response) : IResponse {
+        return new Response(res)
     }
 }

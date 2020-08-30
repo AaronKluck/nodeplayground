@@ -1,18 +1,18 @@
 import { injectable, inject } from "inversify";
-import { ISender, IStorageWriter, IWriteHandler } from "../interfaces";
+import { IResponse, IJsonStorageWriter, IWriteHandler } from "../interfaces";
 import { TYPES } from "../types"
 
 @injectable()
 export class WriteHandler implements IWriteHandler {
-    storageWriter : IStorageWriter
+    storageWriter : IJsonStorageWriter
 
     constructor(
-        @inject(TYPES.IStorageWriter) storageWriter : IStorageWriter
+        @inject(TYPES.IJsonStorageWriter) storageWriter : IJsonStorageWriter
     ) {
         this.storageWriter = storageWriter
     }
 
-    async Execute(params : { [key: string]: string }, output : ISender) {
+    async Execute(params : { [key: string]: string }, output : IResponse) {
         if (Object.keys(params).length === 0) {
             output.Send(
                 "usage: any number of GET params 'key=value'<br/>" +

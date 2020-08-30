@@ -1,23 +1,19 @@
 import { injectable, inject } from "inversify";
-import { promisify } from "util";
-import { TYPES } from "./types"
-import * as fs from "fs"
-
-const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
+import { TYPES } from "../types"
+import { IFileIo } from "../interfaces";
 
 @injectable()
 export class Storage {
-    path : fs.PathLike
+    fileIo : IFileIo
 
     constructor(
-        @inject(TYPES.storagePath) path : fs.PathLike
+        @inject(TYPES.IFileIo) fileIo : IFileIo
     ) {
-        this.path = path
+        this.fileIo = fileIo
     }
 
     async Read(key : string) : Promise<string> {
-        const json = JSON.parse((await readFile(this.path)).toString())
+        const json = await this.LoadFile()
         const value = json[key]
         if (typeof value === "string") {
             return value
@@ -26,8 +22,8 @@ export class Storage {
     }
 
     async ReadAll() : Promise<{[key : string]: string}> {
+        const json = await this.LoadFile()
         const all : {[key: string]: string} = {}
-        const json = JSON.parse((await readFile(this.path)).toString())
         for(const key in json){
             const value = json[key]
             if (typeof value === "string") {
@@ -38,8 +34,12 @@ export class Storage {
     }
 
     async Write(key : string, value : string) : Promise<void> {
-        const json = JSON.parse((await readFile(this.path)).toString())
+        const json = await this.LoadFile()
         json[key] = value
-        await writeFile(this.path, JSON.stringify(json))
+        await this.fileIo.Write(JSON.stringify(json))
+    }
+
+    private async LoadFile() : Promise<any> {
+        return JSON.parse((await this.fileIo.Read()).toString())
     }
 }

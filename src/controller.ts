@@ -1,6 +1,6 @@
 import express from "express";
 import { injectable, inject } from "inversify";
-import { IRootHandler, IReadHandler, IWriteHandler, ISenderFactory } from "./interfaces";
+import { IRootHandler, IReadHandler, IWriteHandler, IResponseFactory } from "./interfaces";
 import { TYPES } from "./types"
 
 // We want to break dependency on Express and deal with simple string:string
@@ -19,32 +19,32 @@ function parseParams(req : express.Request): { [key: string]: string } {
 
 @injectable()
 export class Controller {
-    senderFactory : ISenderFactory
+    responseFactory : IResponseFactory
     rootHandler : IRootHandler
     readHandler : IReadHandler
     writeHandler : IWriteHandler
 
     constructor(
-        @inject(TYPES.ISenderFactory) senderFactory : ISenderFactory,
+        @inject(TYPES.IResponseFactory) responseFactory : IResponseFactory,
         @inject(TYPES.IRootHandler) rootHandler : IRootHandler,
         @inject(TYPES.IReadHandler) readHandler : IReadHandler,
         @inject(TYPES.IWriteHandler) writeHandler : IWriteHandler,
     ) {
-        this.senderFactory = senderFactory
+        this.responseFactory = responseFactory
         this.rootHandler = rootHandler
         this.readHandler = readHandler
         this.writeHandler = writeHandler
     }
 
     async Root(req : express.Request, res : express.Response) {
-        await this.rootHandler.Execute(parseParams(req), this.senderFactory.Create(res))
+        await this.rootHandler.Execute(parseParams(req), this.responseFactory.Create(res))
     }
 
     async Read(req : express.Request, res : express.Response) {
-        await this.readHandler.Execute(parseParams(req), this.senderFactory.Create(res))
+        await this.readHandler.Execute(parseParams(req), this.responseFactory.Create(res))
     }
 
     async Write(req : express.Request, res : express.Response) {
-        await this.writeHandler.Execute(parseParams(req), this.senderFactory.Create(res))
+        await this.writeHandler.Execute(parseParams(req), this.responseFactory.Create(res))
     }
 }
