@@ -1,9 +1,10 @@
 import { injectable, inject } from "inversify"
-import { IResponse, IJsonStorageWriter, IWriteHandler } from "../interfaces"
+import { IResponse } from "../response/interfaces"
+import { IJsonStorageWriter } from "../storage/interfaces"
 import { TYPES } from "../types"
 
 @injectable()
-export class WriteHandler implements IWriteHandler {
+export class WriteHandler {
     storageWriter : IJsonStorageWriter
 
     constructor(

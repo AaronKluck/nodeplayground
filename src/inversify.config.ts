@@ -2,7 +2,9 @@
 import "reflect-metadata"
 
 import { Container, interfaces } from "inversify"
-import { IFileIo, IJsonStorageReader, IJsonStorageWriter, IResponseFactory, IRootHandler, IReadHandler, IWriteHandler } from "./interfaces"
+import { IRootHandler, IReadHandler, IWriteHandler } from "./handler/interfaces"
+import { IResponseFactory } from "./response/interfaces"
+import { IFileIo, IJsonStorageReader, IJsonStorageWriter } from "./storage/interfaces"
 import { TYPES } from "./types"
 import { FileIo } from "./storage/file_io"
 import { JsonStorage } from "./storage/json_storage"

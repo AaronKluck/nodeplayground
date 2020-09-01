@@ -1,7 +1,8 @@
 import "reflect-metadata"
 import * as TypeMoq from "typemoq"
 import { RootHandler } from './root'
-import { IJsonStorageReader, IResponse } from '../interfaces'
+import { IResponse } from "../response/interfaces"
+import { IJsonStorageReader } from "../storage/interfaces"
 
 test('Execute no query', async () => {
     const mockStorage : TypeMoq.IMock<IJsonStorageReader> = TypeMoq.Mock.ofType<IJsonStorageReader>(undefined, TypeMoq.MockBehavior.Strict)

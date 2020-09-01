@@ -2,7 +2,8 @@ import "reflect-metadata"
 import express from "express"
 import * as TypeMoq from "typemoq"
 import { KeyValueController } from './keyvalue_controller'
-import { IResponseFactory, IRootHandler, IReadHandler, IWriteHandler, IResponse } from '../interfaces'
+import { IResponseFactory, IResponse } from '../response/interfaces'
+import { IRootHandler, IReadHandler, IWriteHandler } from '../handler/interfaces'
 
 // Steal this interface definition from express so we can mock it
 interface ParsedQs { [key: string]: undefined | string | string[] | ParsedQs | ParsedQs[] }

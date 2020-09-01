@@ -1,6 +1,7 @@
 import express from "express"
 import { injectable, inject } from "inversify"
-import { IRootHandler, IReadHandler, IWriteHandler, IResponseFactory } from "../interfaces"
+import { IRootHandler, IReadHandler, IWriteHandler } from "../handler/interfaces"
+import { IResponseFactory } from "../response/interfaces"
 import { TYPES } from "../types"
 
 // We want to break dependency on Express and deal with simple string:string

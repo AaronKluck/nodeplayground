@@ -1,9 +1,10 @@
 import { injectable, inject } from "inversify"
-import { IJsonStorageReader, IRootHandler, IResponse } from "../interfaces"
+import { IResponse } from "../response/interfaces"
+import { IJsonStorageReader } from "../storage/interfaces"
 import { TYPES } from "../types"
 
 @injectable()
-export class RootHandler implements IRootHandler {
+export class RootHandler {
     storageReader : IJsonStorageReader
 
     constructor(

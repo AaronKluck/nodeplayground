@@ -1,7 +1,8 @@
 import "reflect-metadata"
 import * as TypeMoq from "typemoq"
 import { WriteHandler } from './write'
-import { IJsonStorageWriter, IResponse } from '../interfaces'
+import { IResponse } from "../response/interfaces"
+import { IJsonStorageWriter } from "../storage/interfaces"
 
 test('Execute no inputs', async () => {
     const mockStorage : TypeMoq.IMock<IJsonStorageWriter> = TypeMoq.Mock.ofType<IJsonStorageWriter>(undefined, TypeMoq.MockBehavior.Strict)

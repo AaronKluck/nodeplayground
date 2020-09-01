@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import * as TypeMoq from "typemoq"
 import { JsonStorage } from './json_storage'
-import { IFileIo } from "../interfaces"
+import { IFileIo } from "./interfaces"
 
 const testFile = "./data/storage.test.json"
 
