@@ -38,14 +38,14 @@ export class KeyValueController {
     }
 
     async Root(req : express.Request, res : express.Response) {
-        await this.rootHandler.Execute(parseParams(req), this.responseFactory.Create(res))
+        await this.rootHandler.Execute(parseParams(req), this.responseFactory(res))
     }
 
     async Read(req : express.Request, res : express.Response) {
-        await this.readHandler.Execute(parseParams(req), this.responseFactory.Create(res))
+        await this.readHandler.Execute(parseParams(req), this.responseFactory(res))
     }
 
     async Write(req : express.Request, res : express.Response) {
-        await this.writeHandler.Execute(parseParams(req), this.responseFactory.Create(res))
+        await this.writeHandler.Execute(parseParams(req), this.responseFactory(res))
     }
 }

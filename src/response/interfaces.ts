@@ -5,5 +5,5 @@ export interface IResponse{
  }
 
 export interface IResponseFactory {
-    Create(res : express.Response) : IResponse
+    (res : express.Response) : IResponse
 }

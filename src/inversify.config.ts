@@ -3,7 +3,7 @@ import "reflect-metadata"
 
 import { Container, interfaces } from "inversify"
 import { IRootHandler, IReadHandler, IWriteHandler } from "./handler/interfaces"
-import { IResponseFactory } from "./response/interfaces"
+import { IResponse } from "./response/interfaces"
 import { IFileIo, IJsonStorageReader, IJsonStorageWriter } from "./storage/interfaces"
 import { TYPES } from "./types"
 import { FileIo } from "./storage/file_io"
@@ -15,25 +15,28 @@ import { WriteHandler } from "./handler/write"
 import { KeyValueController } from "./controller/keyvalue_controller"
 import { PathLike } from "fs"
 
-const myContainer = new Container()
+const container = new Container()
 
 // This injectable interfaces all exist as singletons
-myContainer.bind<IFileIo>(TYPES.IFileIo).to(FileIo).inSingletonScope()
-myContainer.bind<IResponseFactory>(TYPES.IResponseFactory).to(ResponseFactory).inSingletonScope()
-myContainer.bind<IRootHandler>(TYPES.IRootHandler).to(RootHandler).inSingletonScope()
-myContainer.bind<IReadHandler>(TYPES.IReadHandler).to(ReadHandler).inSingletonScope()
-myContainer.bind<IWriteHandler>(TYPES.IWriteHandler).to(WriteHandler).inSingletonScope()
+container.bind<IFileIo>(TYPES.IFileIo).to(FileIo).inSingletonScope()
+container.bind<IRootHandler>(TYPES.IRootHandler).to(RootHandler).inSingletonScope()
+container.bind<IReadHandler>(TYPES.IReadHandler).to(ReadHandler).inSingletonScope()
+container.bind<IWriteHandler>(TYPES.IWriteHandler).to(WriteHandler).inSingletonScope()
 
 // This isn't an interface, but it can be resolved using DI
-myContainer.bind<KeyValueController>(TYPES.Controller).to(KeyValueController).inSingletonScope()
+container.bind<KeyValueController>(TYPES.Controller).to(KeyValueController).inSingletonScope()
 
 // The single JsonStorage instance fulfills both IJsonStorageReader and
 // IJsonStorageWriter interfaces, but we can still make sure it's instantiated
 // only once.
-myContainer.bind<JsonStorage>(TYPES.Storage).to(JsonStorage).inSingletonScope()
-myContainer.bind<IJsonStorageReader>(TYPES.IJsonStorageReader).toDynamicValue((context : interfaces.Context) => { return context.container.get<JsonStorage>(TYPES.Storage) }).inSingletonScope()
-myContainer.bind<IJsonStorageWriter>(TYPES.IJsonStorageWriter).toDynamicValue((context : interfaces.Context) => { return context.container.get<JsonStorage>(TYPES.Storage) }).inSingletonScope()
+container.bind<JsonStorage>(TYPES.Storage).to(JsonStorage).inSingletonScope()
+container.bind<IJsonStorageReader>(TYPES.IJsonStorageReader).toDynamicValue((context : interfaces.Context) => { return context.container.get<JsonStorage>(TYPES.Storage) }).inSingletonScope()
+container.bind<IJsonStorageWriter>(TYPES.IJsonStorageWriter).toDynamicValue((context : interfaces.Context) => { return context.container.get<JsonStorage>(TYPES.Storage) }).inSingletonScope()
 
-myContainer.bind<PathLike>(TYPES.storagePath).toConstantValue("./data/storage.json")
+// This interface needs an injectable factory method
+container.bind<interfaces.Factory<IResponse>>(TYPES.IResponseFactory).toFactory<IResponse>((context: interfaces.Context) => { return ResponseFactory });
 
-export { myContainer }
+// This is a value and not an interface or class, but we can still inject it
+container.bind<PathLike>(TYPES.storagePath).toConstantValue("./data/storage.json")
+
+export { container }

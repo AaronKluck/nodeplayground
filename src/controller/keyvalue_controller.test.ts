@@ -22,7 +22,7 @@ test('Execute no query', async () => {
 
     // The response is converted one per request
     mockResponseFactory.setup(
-        m => m.Create(TypeMoq.It.is<express.Response>(x => true))
+        m => m(TypeMoq.It.is<express.Response>(x => true))
     ).returns(() => mockResponse.object).verifiable(TypeMoq.Times.exactly(3))
 
     // The query property is access oned to iterate the keys, then another for

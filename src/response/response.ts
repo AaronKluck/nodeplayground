@@ -14,9 +14,6 @@ export class Response {
     }
 }
 
-@injectable()
-export class ResponseFactory {
-    Create(res : express.Response) : IResponse {
-        return new Response(res)
-    }
+export function ResponseFactory(res : express.Response) : IResponse {
+    return new Response(res)
 }

@@ -11,8 +11,7 @@ test('Create and Send', async () => {
 
     let expressResponse : express.Response = mockExpressResponse.object
 
-    let factory = new ResponseFactory()
-    let resp = factory.Create(expressResponse)
+    let resp = ResponseFactory(expressResponse)
     resp.Send("expect this")
 
     mockExpressResponse.verifyAll()
